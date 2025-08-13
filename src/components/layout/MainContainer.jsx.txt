@@ -1,0 +1,13 @@
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import '../../styles/components/MainContainer.css';
+
+const MainContainer = () => {
+  return (
+    <main className="main-container">
+      <Outlet />
+    </main>
+  );
+};
+
+export default MainContainer;

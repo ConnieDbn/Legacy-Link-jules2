@@ -1,0 +1,25 @@
+import React from 'react';
+
+function Dashboard() {
+  return (
+    <div className="dashboard-container">
+      <h2>Dashboard</h2>
+      <div className="dashboard-summary">
+        <div className="summary-card">
+          <h3>Vault Items</h3>
+          <p>Total Items: 0</p>
+        </div>
+        <div className="summary-card">
+          <h3>Contacts</h3>
+          <p>Total Contacts: 0</p>
+        </div>
+        <div className="summary-card">
+          <h3>Instructions</h3>
+          <p>Last Updated: Never</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;

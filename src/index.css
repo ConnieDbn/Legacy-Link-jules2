@@ -1,0 +1,158 @@
+/* Larger Buttons */
+button, .add-button, .save-button {
+  padding: 0.8em 1.7em;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+}
+/* Updated Color Palette */
+:root {
+  --primary-blue: #1565c0; /* Deeper Blue */
+  --secondary-yellow: #ffe082; /* Muted Yellow */
+  --background-light: #e3f2fd; /* Very Light Blue */
+  --text-dark: #263238; /* Dark Gray */
+  --button-green: #388e3c; /* Darker Green */
+  --input-border: #90a4ae; /* Medium Gray */
+  --input-background: #f5f5f5; /* Light Gray */
+  --white: #fff;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--background-light);
+  margin: 0;
+  padding: 0;
+  color: var(--text-dark);
+  font-size: 1.15em;
+  line-height: 1.7;
+}
+
+nav {
+  background: var(--primary-blue);
+  padding: 1.2em 0.5em;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+nav img {
+  background: var(--white);
+  border-radius: 6px;
+  padding: 2px;
+  height: 48px;
+}
+
+nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.6em 1.2em;
+  border-radius: 6px;
+  font-size: 1.1em;
+  transition: background 0.2s, color 0.2s;
+}
+
+nav a:hover, nav a:focus {
+  background: #1565c0;
+  color: var(--secondary-yellow);
+  outline: none;
+}
+
+h2 {
+  color: var(--primary-blue);
+  margin-top: 0;
+  font-size: 2em;
+}
+
+button, .add-button, .save-button {
+  background: var(--button-green);
+  color: var(--white);
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0.7em 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+button:hover, .add-button:hover, .save-button:hover {
+  background: #2e7031;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.7em;
+  margin: 0.4em 0 1.2em 0;
+  border: 1.5px solid var(--input-border);
+  border-radius: 6px;
+  font-size: 1.1em;
+  box-sizing: border-box;
+  background: var(--input-background);
+  color: var(--text-dark);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-blue);
+  outline: none;
+  background: var(--secondary-yellow);
+}
+
+.form-group {
+  margin-bottom: 1.3em;
+}
+
+.dashboard-summary {
+  display: flex;
+  gap: 1.5em;
+  margin-top: 1.2em;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
+  padding: 1.2em 2.2em;
+  min-width: 140px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.items-list, .contacts-list, .instructions-content {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
+  padding: 1.2em;
+  margin-top: 1.2em;
+  font-size: 1.1em;
+}
+
+.auth-container, .profile-container, .add-edit-container {
+  max-width: 480px;
+  margin: 2.5em auto;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
+  padding: 2.5em;
+}
+
+.auth-link {
+  margin-top: 1.2em;
+  font-size: 1.05em;
+  color: var(--primary-blue);
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .dashboard-summary {
+    flex-direction: column;
+    gap: 1em;
+  }
+  nav {
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: flex-start;
+  }
+}
