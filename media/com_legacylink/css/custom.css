@@ -1,0 +1,59 @@
+/*
+ * Custom CSS for the Legacy Link component
+ * This file provides styling to ensure a clean and user-friendly experience.
+ */
+
+/* --- General & Typography --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+}
+
+h1, h2, h3 {
+    font-weight: 300;
+    color: #1a1a1a;
+}
+
+/* --- Component Specific Styles --- */
+.legacylink-dashboard {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* --- Forms & Buttons --- */
+/* Making form elements larger and more accessible */
+.uk-input, .uk-button, .uk-select {
+    padding: 10px 15px;
+    height: auto;
+    font-size: 1rem;
+}
+
+.uk-button {
+    text-transform: none; /* Softer button text */
+    font-weight: 500;
+}
+
+/* --- Dashboard Panels --- */
+.dashboard-summary .uk-card-body {
+    background-color: #fff;
+}
+
+.dashboard-documents-list table {
+    background-color: #fff;
+}
+
+/* --- Dead Man's Switch Panel --- */
+.uk-alert-primary {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    border: 1px solid #bbdefb;
+    border-radius: 4px;
+}
+
+.uk-alert-primary .uk-button-secondary {
+    background-color: #0d47a1;
+    color: #fff;
+}

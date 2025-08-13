@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.0" method="upgrade">
+    <name>com_legacylink</name>
+    <creationDate>2025-08-13</creationDate>
+    <author>Jules</author>
+    <authorEmail>jules@example.com</authorEmail>
+    <version>1.0.0</version>
+    <description>A component to manage a digital legacy, including a secure vault and a 'Dead Man's Switch'.</description>
+    <namespace>Jules\Component\LegacyLink</namespace>
+
+    <!-- Site (frontend) files -->
+    <files folder="site">
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <!-- Administrator (backend) files -->
+    <administration>
+        <menu>Legacy Link</menu>
+        <files folder="admin">
+            <folder>sql</folder>
+            <folder>src</folder>
+            <folder>services</folder>
+            <folder>cli</folder>
+        </files>
+    </administration>
+
+    <!-- Installation SQL -->
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8mb4">admin/sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <!-- Uninstallation SQL -->
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8mb4">admin/sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <!-- Installation Script -->
+    <scriptfile>script.php</scriptfile>
+
+    <!-- Media files -->
+    <media destination="com_legacylink" folder="media">
+        <folder>css</folder>
+    </media>
+</extension>
