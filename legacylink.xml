@@ -22,7 +22,11 @@
             <folder>src</folder>
             <folder>services</folder>
             <folder>cli</folder>
+            <folder>language</folder>
         </files>
+        <languages folder="admin/language">
+            <language tag="en-GB">en-GB/com_legacylink.ini</language>
+        </languages>
     </administration>
 
     <!-- Installation SQL -->
