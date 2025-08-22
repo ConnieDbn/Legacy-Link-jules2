@@ -5,7 +5,7 @@ function VaultItems() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch('/api/vault/items')
+    fetch('/api/vault')
       .then(res => res.json())
       .then(data => setItems(data))
       .catch(err => console.error('Failed to fetch items:', err));
@@ -21,7 +21,7 @@ function VaultItems() {
         ) : (
           <ul>
             {items.map(item => (
-              <li key={item._id} style={{ marginBottom: '1em' }}>
+              <li key={item.id} style={{ marginBottom: '1em' }}>
                 <strong>{item.title}</strong> ({item.type})<br />
                 {item.content && <span>{item.content}<br /></span>}
                 {item.fileUrl && (
