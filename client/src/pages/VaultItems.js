@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import './VaultItems.css';
 
 function VaultItems() {
   const [items, setItems] = useState([]);
@@ -21,7 +22,7 @@ function VaultItems() {
         ) : (
           <ul>
             {items.map(item => (
-              <li key={item.id} style={{ marginBottom: '1em' }}>
+              <li key={item.id} className="vault-item">
                 <strong>{item.title}</strong> ({item.type})<br />
                 {item.content && <span>{item.content}<br /></span>}
                 {item.fileUrl && (
