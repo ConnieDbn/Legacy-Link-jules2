@@ -349,42 +349,25 @@ router.post('/:id/access', auth, async (req, res) => {
     }
 
     // Check if user owns the vault item
-    if (vaultItem.user.toString() !== req.user.id) {
+    if (vaultItem.userId !== parseInt(req.user.id)) {
       return res.status(401).json({ message: 'User not authorized' });
     }
     
     // Check if user has this trustee
     const user = await User.findById(req.user.id);
-    const trusteeExists = user.trustees.some(
-      trustee => trustee._id.toString() === trusteeId
+    const trustees = user.getTrustees();
+    const trusteeExists = trustees.some(
+      trustee => trustee.id.toString() === trusteeId
     );
     
     if (!trusteeExists) {
       return res.status(404).json({ message: 'Trustee not found' });
     }
     
-    // Check if trustee already has access to this item
-    const trusteeIndex = vaultItem.accessRights.trustees.findIndex(
-      trustee => trustee.trusteeId.toString() === trusteeId
-    );
+    // Grant access to the trustee
+    await vaultItem.addTrusteeAccess(trusteeId, accessTrigger, triggerDate);
     
-    if (trusteeIndex !== -1) {
-      // Update existing access
-      vaultItem.accessRights.trustees[trusteeIndex].accessTrigger = accessTrigger || 'inactivity';
-      if (triggerDate) {
-        vaultItem.accessRights.trustees[trusteeIndex].triggerDate = triggerDate;
-      }
-    } else {
-      // Add new access
-      vaultItem.accessRights.trustees.push({
-        trusteeId,
-        accessTrigger: accessTrigger || 'inactivity',
-        triggerDate
-      });
-    }
-    
-    await vaultItem.save();
-    res.json(vaultItem);
+    res.json({ message: 'Trustee access granted successfully' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -405,17 +388,14 @@ router.delete('/:id/access/:trusteeId', auth, async (req, res) => {
     }
 
     // Check if user owns the vault item
-    if (vaultItem.user.toString() !== req.user.id) {
+    if (vaultItem.userId !== parseInt(req.user.id)) {
       return res.status(401).json({ message: 'User not authorized' });
     }
     
-    // Remove trustee from access list
-    vaultItem.accessRights.trustees = vaultItem.accessRights.trustees.filter(
-      trustee => trustee.trusteeId.toString() !== req.params.trusteeId
-    );
+    // Revoke access from the trustee
+    await vaultItem.revokeAccess(req.params.trusteeId);
     
-    await vaultItem.save();
-    res.json({ message: 'Trustee access removed' });
+    res.json({ message: 'Trustee access removed successfully' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -438,13 +418,12 @@ router.put('/:id/public', auth, async (req, res) => {
     }
 
     // Check if user owns the vault item
-    if (vaultItem.user.toString() !== req.user.id) {
+    if (vaultItem.userId !== parseInt(req.user.id)) {
       return res.status(401).json({ message: 'User not authorized' });
     }
     
     // Update public access setting
-    vaultItem.accessRights.isPublic = isPublic;
-    await vaultItem.save();
+    await vaultItem.update({ isPublic });
     
     res.json(vaultItem);
   } catch (err) {
@@ -469,18 +448,17 @@ router.put('/:id/reminder', auth, async (req, res) => {
     }
 
     // Check if user owns the vault item
-    if (vaultItem.user.toString() !== req.user.id) {
+    if (vaultItem.userId !== parseInt(req.user.id)) {
       return res.status(401).json({ message: 'User not authorized' });
     }
     
     // Update reminder settings
-    vaultItem.reminder = {
-      enabled: enabled !== undefined ? enabled : vaultItem.reminder.enabled,
-      frequency: frequency || vaultItem.reminder.frequency,
-      nextReminder: nextReminder || vaultItem.reminder.nextReminder
-    };
-    
-    await vaultItem.save();
+    const reminderFields = {};
+    if (enabled !== undefined) reminderFields.reminderEnabled = enabled;
+    if (frequency) reminderFields.reminderFrequency = frequency;
+    if (nextReminder) reminderFields.nextReminder = nextReminder;
+
+    await vaultItem.update(reminderFields);
     res.json(vaultItem);
   } catch (err) {
     console.error(err.message);
