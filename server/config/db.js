@@ -91,6 +91,18 @@ const initializeDatabase = () => {
       )
     `);
 
+    // Instructions table
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS instructions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId INTEGER NOT NULL UNIQUE,
+        content TEXT,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
+
     // Create indexes for better performance
     db.exec(`
       CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);

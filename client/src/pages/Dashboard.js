@@ -15,10 +15,11 @@ function Dashboard() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const [apiTestRes, vaultRes, trusteesRes] = await Promise.all([
+        const [apiTestRes, vaultRes, trusteesRes, instructionsRes] = await Promise.all([
           fetch('http://localhost:5000/api/test'),
           fetch('/api/vault'),
-          fetch('/api/auth/trustees')
+          fetch('/api/auth/trustees'),
+          fetch('/api/instructions/last-update')
         ]);
 
         const apiTestData = await apiTestRes.json();
@@ -26,11 +27,12 @@ function Dashboard() {
 
         const vaultData = await vaultRes.json();
         const trusteesData = await trusteesRes.json();
+        const instructionsData = await instructionsRes.json();
 
         setSummaryData({
           vaultItems: vaultData.length,
           contacts: trusteesData.length,
-          lastInstructionUpdate: 'Never' // To be implemented
+          lastInstructionUpdate: instructionsData.updatedAt ? new Date(instructionsData.updatedAt).toLocaleDateString() : 'Never'
         });
       } catch (error) {
         setApiMessage('Error connecting to backend');
