@@ -298,35 +298,6 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-// @route    DELETE api/vault/file
-// @desc     Delete a file from the vault
-// @access   Private
-router.delete('/file', auth, async (req, res) => {
-  try {
-    const { fileUrl } = req.body;
-    
-    if (!fileUrl) {
-      return res.status(400).json({ message: 'File URL is required' });
-    }
-    
-    // Extract filename from fileUrl
-    const filename = fileUrl.split('/').pop();
-    const filePath = path.join(__dirname, '../uploads/vault', filename);
-    
-    // Check if file exists
-    if (fs.existsSync(filePath)) {
-      // Delete file
-      fs.unlinkSync(filePath);
-      res.json({ message: 'File deleted successfully' });
-    } else {
-      res.status(404).json({ message: 'File not found' });
-    }
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
 // NEW ROUTES FOR TRUSTEE ACCESS MANAGEMENT
 
 // @route    POST api/vault/:id/access
