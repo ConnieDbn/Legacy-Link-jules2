@@ -19,6 +19,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Define Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/vault', require('./routes/vault'));
+app.use('/api/instructions', require('./routes/instructions'));
 
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working!' });
