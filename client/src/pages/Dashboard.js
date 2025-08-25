@@ -1,30 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import './Dashboard.css';
 
 function Dashboard() {
   const [apiMessage, setApiMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetch('http://localhost:5000/api/test')
-      .then(response => response.json())
-      .then(data => {
-        setApiMessage(data.message);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setApiMessage('Error connecting to backend');
-        setIsLoading(false);
-      });
-  }, []);
-
-  // Mock data - in real app this would come from API
-  const summaryData = {
+  const [summaryData, setSummaryData] = useState({
     vaultItems: 0,
     contacts: 0,
     lastInstructionUpdate: 'Never'
-  };
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [apiTestRes, vaultRes, trusteesRes, instructionsRes] = await Promise.all([
+          fetch('http://localhost:5000/api/test'),
+          fetch('/api/vault'),
+          fetch('/api/auth/trustees'),
+          fetch('/api/instructions/last-update')
+        ]);
+
+        const apiTestData = await apiTestRes.json();
+        setApiMessage(apiTestData.message);
+
+        const vaultData = await vaultRes.json();
+        const trusteesData = await trusteesRes.json();
+        const instructionsData = await instructionsRes.json();
+
+        setSummaryData({
+          vaultItems: vaultData.length,
+          contacts: trusteesData.length,
+          lastInstructionUpdate: instructionsData.updatedAt ? new Date(instructionsData.updatedAt).toLocaleDateString() : 'Never'
+        });
+      } catch (error) {
+        setApiMessage('Error connecting to backend');
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="dashboard-container">
@@ -45,33 +64,12 @@ function Dashboard() {
       </div>
 
       {/* Hero Image */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginBottom: '3em'
-        }}
-      >
-        <div
-          style={{
-            background: 'var(--primary-blue)',
-            borderRadius: '20px',
-            padding: '2em',
-            maxWidth: '500px',
-            boxShadow: '0 8px 32px var(--shadow-medium)'
-          }}
-        >
+      <div className="hero-image-container">
+        <div className="hero-image-wrapper">
           <img
             src="https://www.consat.co.za/images/Legacy%20Vault.png"
             alt="Legacy Link - Secure digital legacy platform for families"
-            style={{
-              display: 'block',
-              width: '100%',
-              maxWidth: '400px',
-              height: 'auto',
-              borderRadius: '12px',
-              margin: '0 auto'
-            }}
+            className="hero-image"
           />
         </div>
       </div>
@@ -107,31 +105,15 @@ function Dashboard() {
       </div>
 
       {/* Dead Man's Switch Status */}
-      <div 
-        style={{
-          background: 'var(--background-white)',
-          border: '2px solid var(--warning-orange)',
-          borderRadius: '12px',
-          padding: '2em',
-          margin: '2em 0',
-          textAlign: 'center'
-        }}
-      >
-        <h3 style={{ 
-          color: 'var(--warning-orange)', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          gap: '0.5em',
-          margin: '0 0 1em 0'
-        }}>
+      <div className="dead-mans-switch-status">
+        <h3>
           <span role="img" aria-label="timer">⏰</span>
           Dead Man's Switch Status
         </h3>
-        <p style={{ fontSize: '1.2em', margin: '0 0 1em 0' }}>
-          <strong>Status:</strong> <span style={{ color: 'var(--warning-orange)' }}>Not Configured</span>
+        <p>
+          <strong>Status:</strong> <span className="status-text">Not Configured</span>
         </p>
-        <p style={{ color: 'var(--text-medium)', marginBottom: '1.5em' }}>
+        <p className="help-text">
           Set up automatic notifications to your trusted contacts if you don't check in regularly.
         </p>
         <Link to="/profile" className="btn btn-primary btn-large">
@@ -159,52 +141,33 @@ function Dashboard() {
       </div>
 
       {/* Help Section */}
-      <div 
-        style={{
-          background: 'var(--background-white)',
-          borderRadius: '12px',
-          padding: '2em',
-          marginTop: '3em',
-          border: '1px solid rgba(13, 71, 161, 0.1)'
-        }}
-      >
-        <h3 style={{ 
-          color: 'var(--primary-blue)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5em',
-          marginBottom: '1em'
-        }}>
+      <div className="help-section">
+        <h3>
           <span role="img" aria-label="help">❓</span>
           Getting Started
         </h3>
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '1.5em',
-          fontSize: '1.1em'
-        }}>
+        <div className="help-section-grid">
           <div>
-            <h4 style={{ color: 'var(--text-dark)', marginBottom: '0.5em' }}>
+            <h4>
               1. Set Up Your Vault
             </h4>
-            <p style={{ color: 'var(--text-medium)', lineHeight: '1.6' }}>
+            <p>
               Upload important documents, photos, and digital assets to your secure vault.
             </p>
           </div>
           <div>
-            <h4 style={{ color: 'var(--text-dark)', marginBottom: '0.5em' }}>
+            <h4>
               2. Add Trusted Contacts
             </h4>
-            <p style={{ color: 'var(--text-medium)', lineHeight: '1.6' }}>
+            <p>
               Choose family members or friends who should receive access to your legacy.
             </p>
           </div>
           <div>
-            <h4 style={{ color: 'var(--text-dark)', marginBottom: '0.5em' }}>
+            <h4>
               3. Write Instructions
             </h4>
-            <p style={{ color: 'var(--text-medium)', lineHeight: '1.6' }}>
+            <p>
               Leave important guidance and final wishes for your loved ones.
             </p>
           </div>
